@@ -9,18 +9,18 @@ enum _SettingsTileType { simple, switchTile }
 
 class SettingsTile extends StatelessWidget {
   final String title;
-  final String subtitle;
-  final Widget leading;
-  final Widget trailing;
-  final VoidCallback onTap;
-  final Function(bool value) onToggle;
-  final bool switchValue;
+  final String? subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+  final Function(bool value)? onToggle;
+  final bool? switchValue;
   final bool enabled;
   final _SettingsTileType _tileType;
 
   const SettingsTile({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
     this.subtitle,
     this.leading,
     this.trailing,
@@ -32,14 +32,14 @@ class SettingsTile extends StatelessWidget {
         super(key: key);
 
   const SettingsTile.switchTile({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
     this.subtitle,
     this.leading,
     this.enabled = true,
     this.trailing,
-    @required this.onToggle,
-    @required this.switchValue,
+    required this.onToggle,
+    required this.switchValue,
   })  : _tileType = _SettingsTileType.switchTile,
         onTap = null,
         super(key: key);
@@ -72,7 +72,7 @@ class SettingsTile extends StatelessWidget {
         trailing: trailing,
         hasDetails: false,
         leading: leading,
-        onPress: onTap,
+        onPress: onTap as Future<void> Function()?,
       );
     }
   }
@@ -81,15 +81,15 @@ class SettingsTile extends StatelessWidget {
     if (_tileType == _SettingsTileType.switchTile) {
       return SwitchListTile(
         secondary: leading,
-        value: switchValue,
+        value: switchValue!,
         onChanged: enabled ? onToggle : null,
         title: Text(title),
-        subtitle: subtitle != null ? Text(subtitle) : null,
+        subtitle: subtitle != null ? Text(subtitle!) : null,
       );
     } else {
       return ListTile(
         title: Text(title),
-        subtitle: subtitle != null ? Text(subtitle) : null,
+        subtitle: subtitle != null ? Text(subtitle!) : null,
         leading: leading,
         enabled: enabled,
         trailing: trailing,

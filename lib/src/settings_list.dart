@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/src/settings_section.dart';
 
 class SettingsList extends StatelessWidget {
-  final List<SettingsSection> sections;
-  final Color backgroundColor;
+  final List<SettingsSection>? sections;
+  final Color? backgroundColor;
 
   const SettingsList({
-    Key key,
+    Key? key,
     this.sections,
     this.backgroundColor,
   }) : super(key: key);
@@ -18,12 +18,12 @@ class SettingsList extends StatelessWidget {
           ? Theme.of(context).canvasColor
           : backgroundColor,
       child: ListView.builder(
-        itemCount: sections.length,
+        itemCount: sections!.length,
         itemBuilder: (context, index) {
-          SettingsSection current = sections[index];
-          SettingsSection futureOne;
+          SettingsSection current = sections![index];
+          SettingsSection? futureOne;
           try {
-            futureOne = sections[index + 1];
+            futureOne = sections![index + 1];
           } catch (e) {}
 
           // Add divider if title is null

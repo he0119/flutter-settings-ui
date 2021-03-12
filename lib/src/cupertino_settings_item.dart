@@ -14,8 +14,8 @@ typedef Future<void> PressOperationCallback();
 
 class CupertinoSettingsItem extends StatefulWidget {
   const CupertinoSettingsItem({
-    @required this.type,
-    @required this.label,
+    required this.type,
+    required this.label,
     this.subtitle,
     this.leading,
     this.trailing,
@@ -25,20 +25,19 @@ class CupertinoSettingsItem extends StatefulWidget {
     this.onPress,
     this.switchValue = false,
     this.onToggle,
-  })  : assert(label != null),
-        assert(type != null);
+  });
 
   final String label;
-  final String subtitle;
-  final Widget leading;
-  final Widget trailing;
+  final String? subtitle;
+  final Widget? leading;
+  final Widget? trailing;
   final SettingsItemType type;
-  final String value;
+  final String? value;
   final bool hasDetails;
   final bool enabled;
-  final PressOperationCallback onPress;
-  final bool switchValue;
-  final Function(bool value) onToggle;
+  final PressOperationCallback? onPress;
+  final bool? switchValue;
+  final Function(bool value)? onToggle;
 
   @override
   State<StatefulWidget> createState() => new CupertinoSettingsItemState();
@@ -51,15 +50,15 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ListTileTheme tileTheme = ListTileTheme.of(context);
-    IconThemeData iconThemeData;
+    late IconThemeData iconThemeData;
     if (widget.leading != null)
       iconThemeData = IconThemeData(color: _iconColor(theme, tileTheme));
 
-    Widget leadingIcon;
+    Widget? leadingIcon;
     if (widget.leading != null) {
       leadingIcon = IconTheme.merge(
         data: iconThemeData,
-        child: widget.leading,
+        child: widget.leading!,
       );
     }
 
@@ -95,7 +94,7 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
           Text(widget.label),
           const Padding(padding: EdgeInsets.only(top: 4.0)),
           Text(
-            widget.subtitle,
+            widget.subtitle!,
             style: TextStyle(
               fontSize: 12.0,
               letterSpacing: -0.2,
@@ -122,14 +121,14 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
           Padding(
             padding: const EdgeInsets.only(right: 11.0),
             child: CupertinoSwitch(
-              value: widget.switchValue,
+              value: widget.switchValue!,
               activeColor: widget.enabled
                   ? Theme.of(context).accentColor
                   : CupertinoColors.inactiveGray,
               onChanged: !widget.enabled
                   ? null
                   : (bool value) {
-                      widget.onToggle(value);
+                      widget.onToggle!(value);
                     },
             ),
           ),
@@ -145,7 +144,7 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
                 right: 2.25,
               ),
               child: Text(
-                widget.value,
+                widget.value!,
                 style: TextStyle(
                     color: CupertinoColors.inactiveGray, fontSize: 16),
               ),
@@ -195,7 +194,7 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         if (widget.onPress != null && widget.enabled) {
-          widget.onPress();
+          widget.onPress!();
         }
       },
       onTapUp: (_) {
@@ -245,10 +244,10 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
     }
   }
 
-  Color _iconColor(ThemeData theme, ListTileTheme tileTheme) {
-    if (tileTheme?.selectedColor != null) return tileTheme.selectedColor;
+  Color? _iconColor(ThemeData theme, ListTileTheme tileTheme) {
+    if (tileTheme.selectedColor != null) return tileTheme.selectedColor;
 
-    if (tileTheme?.iconColor != null) return tileTheme.iconColor;
+    if (tileTheme.iconColor != null) return tileTheme.iconColor;
 
     switch (theme.brightness) {
       case Brightness.light:
@@ -256,7 +255,5 @@ class CupertinoSettingsItemState extends State<CupertinoSettingsItem> {
       case Brightness.dark:
         return null; // null - use current icon theme color
     }
-    assert(theme.brightness != null);
-    return null;
   }
 }
